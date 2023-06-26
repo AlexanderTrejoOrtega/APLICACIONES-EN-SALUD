@@ -1,0 +1,464 @@
+-- ESTRUCTURA DE TABLA PARA LA TABLA `AREA`
+--
+
+CREATE TABLE `area` (
+  `area_cod` int(11) NOT NULL COMMENT 'Codigo auto-incrementado del movimiento del area',
+  `area_nombre` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'nombre del area',
+  `area_fecha_registro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'fecha del registro del movimiento',
+  `area_estado` enum('ACTIVO','INACTIVO') COLLATE utf8_unicode_ci NOT NULL COMMENT 'estado del area'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Entidad Area';
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `PACIENTE`
+--
+
+CREATE TABLE `paciente` (
+  `paciente_cod` int(11) NOT NULL,
+  `pac_nombres` varchar(100) NOT NULL,
+  `pac_apellidoPate` varchar(50) NOT NULL,
+  `pac_apellidoMate` varchar(50) NOT NULL,
+  `pac_dni` char(8) NOT NULL,
+  `pac_sexo` char(1) NOT NULL,
+  `pac_fechaNacimiento` date NOT NULL,
+  `pac_direccion` varchar(250) NOT NULL,
+  `pac_telefono` char(9) NOT NULL,
+  `pac_movil` char(9) NOT NULL,
+  `pac_email` varchar(80) NOT NULL,
+  `pac_fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pac_estado` enum('ACTIVO','INACTIVO') NOT NULL,
+  `pac_tipo` enum('NATURAL','JURIDICA') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `DETALLE_PACIENTE`
+--
+
+CREATE TABLE `detalle_paciente` (
+  `detallepaciente_cod` int(11) NOT NULL,
+  `paciente_cod` int(11) NOT NULL,
+  `documento_cod` char(13) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `DETALLE_ENTIDAD`
+--
+
+CREATE TABLE `detalle_entidad` (
+  `detalleentidad_cod` int(11) NOT NULL,
+  `entidad_cod` int(11) NOT NULL,
+  `documento_cod` char(13) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `DOCUMENTO`
+--
+
+CREATE TABLE `documento` (
+  `documento_cod` char(13) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Codigo auto-incrementado del documento',
+  `doc_asunto` varchar(150) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Asunto del documento',
+  `doc_fecha_recepcion` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'fecha del registro del documento',
+  `tipoDocumento_cod` int(11) NOT NULL COMMENT 'codigo del tipo de documentos',
+  `area_cod` int(11) NOT NULL COMMENT 'Destino del documento',
+  `usu_cod` int(11) NOT NULL COMMENT 'Codigo de Usuario',
+  `doc_estado` enum('PENDIENTE','ACEPTADO','RECHAZADO',’ENTREGADO’) COLLATE utf8_unicode_ci NOT NULL COMMENT 'estado del documento',
+  `doc_tipo` enum('I','C') COLLATE utf8_unicode_ci NOT NULL,
+  `doc_documento` varchar(350) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='Entidad Documento';
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `ENTIDAD`
+--
+
+CREATE TABLE `entidad` (
+  `entidad_cod` int(11) NOT NULL,
+  `enti_nombre` varchar(150) NOT NULL,
+  `enti_tipoentidad` varchar(50) NOT NULL,
+  `enti_estado` enum('ACTIVO','INACTIVO') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `PERSONAL`
+--
+
+CREATE TABLE `personal` (
+  `personal_cod` int(11) NOT NULL,
+  `pers_nombres` varchar(100) NOT NULL,
+  `pers_apellidoPate` varchar(50) NOT NULL,
+  `pers_apellidoMate` varchar(50) NOT NULL,
+  `pers_dni` char(8) NOT NULL,
+  `pers_sexo` char(1) NOT NULL,
+  `pers_fechaNacimiento` date NOT NULL,
+  `pers_direccion` varchar(250) NOT NULL,
+  `pers_telefono` char(9) NOT NULL,
+  `pers_movil` char(9) NOT NULL,
+  `pers_email` varchar(80) NOT NULL,
+  `pers_fecharegistro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pers_estado` enum('ACTIVO','INACTIVO') NOT NULL,
+  `usuario_cod` int(11) NOT NULL,
+  `pers_puesto` enum('ARCHIVISTA','RECEPCIONISTA') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `TIPO_DOCUMENTO`
+--
+
+CREATE TABLE `tipo_documento` (
+  `tipodocumento_cod` int(11) NOT NULL COMMENT 'Codigo auto-incrementado del tipo documento',
+  `tipodo_descripcion` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Descripción del tipo documento',
+  `tipodo_estado` enum('ACTIVO','INACTIVO') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'estado del tipo de documento'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Entidad Documento';
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `TIPO_USUARIO`
+--
+
+CREATE TABLE `tipo_usuario` (
+  `cod_tipousuario` int(11) NOT NULL,
+  `tipusu_descripcion` varchar(40) NOT NULL,
+  `tipusu_estado` enum('ACTIVO','INACTIVO') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- ESTRUCTURA DE TABLA PARA LA TABLA `USUARIO`
+--
+
+CREATE TABLE `usuario` (
+  `cod_usuario` int(11) NOT NULL,
+  `usu_nombre` varchar(30) NOT NULL,
+  `usu_clave` varchar(30) NOT NULL,
+  `usu_estado` enum('ACTIVO','INACTIVO') DEFAULT NULL,
+  `cod_tipousuario` int(11) NOT NULL,
+  `usu_foto` varchar(350) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indices de la tabla `area`
+--
+ALTER TABLE `area`
+  ADD PRIMARY KEY (`area_cod`),
+  ADD UNIQUE KEY `unico` (`area_nombre`);
+
+--
+-- Indices de la tabla `paciente`
+--
+ALTER TABLE `paciente`
+  ADD PRIMARY KEY (`paciente_cod`),
+  ADD KEY `cod_pacona` (`pac_nombres`);
+
+--
+-- Indices de la tabla `detalle_paciente`
+--
+ALTER TABLE `detalle_paciente`
+  ADD PRIMARY KEY (`detallepaciente_cod`),
+  ADD KEY `paciente_cod` (`paciente_cod`),
+  ADD KEY `fd` (`documento_cod`);
+
+--
+-- Indices de la tabla `detalle_entidad`
+--
+ALTER TABLE `detalle_entidad`
+  ADD PRIMARY KEY (`detalleentidad_cod`),
+  ADD KEY `entidad_cod` (`entidad_cod`),
+  ADD KEY `sd` (`documento_cod`);
+
+--
+-- Indices de la tabla `documento`
+--
+ALTER TABLE `documento`
+  ADD PRIMARY KEY (`documento_cod`),
+  ADD KEY `area_cod` (`area_cod`),
+  ADD KEY `tipoDocumento_cod` (`tipoDocumento_cod`),
+  ADD KEY `usu_cod` (`usu_cod`);
+
+--
+-- Indices de la tabla `entidad`
+--
+ALTER TABLE `entidad`
+  ADD PRIMARY KEY (`entidad_cod`),
+  ADD UNIQUE KEY `unico` (`enti_nombre`) USING BTREE;
+
+--
+-- Indices de la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD PRIMARY KEY (`personal_cod`),
+  ADD KEY `cod_persona` (`pers_nombres`),
+  ADD KEY `personal_ibfk_1` (`usuario_cod`);
+
+--
+-- Indices de la tabla `tipo_documento`
+--
+ALTER TABLE `tipo_documento`
+  ADD PRIMARY KEY (`tipodocumento_cod`),
+  ADD UNIQUE KEY `IU_COD_TIPDOCUMENTO` (`tipodocumento_cod`) USING BTREE COMMENT 'EL CODIGO SERA UNICO',
+  ADD KEY `IX_NOMBRE` (`tipodo_descripcion`) USING BTREE COMMENT 'SE ORDENARA LOS DATOS POR LA DESCRIPCION';
+
+--
+-- Indices de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  ADD PRIMARY KEY (`cod_tipousuario`);
+
+--
+-- Indices de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD PRIMARY KEY (`cod_usuario`),
+  ADD KEY `cod_tipousuario` (`cod_tipousuario`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `area`
+--
+ALTER TABLE `area`
+  MODIFY `area_cod` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Codigo auto-incrementado del movimiento del area', AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `paciente`
+--
+ALTER TABLE `paciente`
+  MODIFY `paciente_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT de la tabla `detalle_paciente`
+--
+ALTER TABLE `detalle_paciente`
+  MODIFY `detallepaciente_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+--
+-- AUTO_INCREMENT de la tabla `detalle_entidad`
+--
+ALTER TABLE `detalle_entidad`
+  MODIFY `detalleentidad_cod` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT de la tabla `entidad`
+--
+ALTER TABLE `entidad`
+  MODIFY `entidad_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `personal`
+--
+ALTER TABLE `personal`
+  MODIFY `personal_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT de la tabla `tipo_documento`
+--
+ALTER TABLE `tipo_documento`
+  MODIFY `tipodocumento_cod` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Codigo auto-incrementado del tipo documento', AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  MODIFY `cod_tipousuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `cod_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `detalle_paciente`
+--
+ALTER TABLE `detalle_paciente`
+  ADD CONSTRAINT `detalle_paciente_ibfk_1` FOREIGN KEY (`paciente_cod`) REFERENCES `paciente` (`paciente_cod`),
+  ADD CONSTRAINT `detalle_paciente_ibfk_2` FOREIGN KEY (`documento_cod`) REFERENCES `documento` (`documento_cod`);
+
+--
+-- Filtros para la tabla `detalle_entidad`
+--
+ALTER TABLE `detalle_entidad`
+  ADD CONSTRAINT `detalle_entidad_ibfk_1` FOREIGN KEY (`entidad_cod`) REFERENCES `entidad` (`entidad_cod`),
+  ADD CONSTRAINT `detalle_entidad_ibfk_2` FOREIGN KEY (`documento_cod`) REFERENCES `documento` (`documento_cod`);
+
+--
+-- Filtros para la tabla `documento`
+--
+ALTER TABLE `documento`
+  ADD CONSTRAINT `documento_ibfk_1` FOREIGN KEY (`area_cod`) REFERENCES `area` (`area_cod`),
+  ADD CONSTRAINT `documento_ibfk_2` FOREIGN KEY (`tipoDocumento_cod`) REFERENCES `tipo_documento` (`tipodocumento_cod`),
+  ADD CONSTRAINT `documento_ibfk_3` FOREIGN KEY (`usu_cod`) REFERENCES `usuario` (`cod_usuario`);
+
+--
+-- Filtros para la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD CONSTRAINT `personal_ibfk_1` FOREIGN KEY (`usuario_cod`) REFERENCES `usuario` (`cod_usuario`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`cod_tipousuario`) REFERENCES `tipo_usuario` (`cod_tipousuario`);
+
+--
+-- Procedimientos
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_BUSCARADMINISTRADOR` (IN `codigo` INT)  BEGIN
+SELECT
+personal.pers_nombres,
+personal.pers_apellidoPate,
+personal.pers_apellidoMate,
+usuario.usu_foto,
+usuario.cod_usuario,
+personal.pers_email,
+personal.pers_telefono,
+personal.pers_movil,
+usuario.usu_clave,
+personal.pers_direccion,
+personal.pers_fechaNacimiento,
+personal.pers_dni,
+personal.pers_sexo
+FROM
+usuario
+INNER JOIN personal ON personal.usuario_cod = usuario.cod_usuario
+where personal.personal_cod = codigo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARAREA` (IN `CODIGO` INT, IN `AREA` VARCHAR(80), IN `ESTADO` VARCHAR(30))  BEGIN
+UPDATE area SET
+area_nombre = AREA,
+area_estado = ESTADO
+WHERE area_cod = CODIGO;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARPACIENTETODOS` (IN `codigo` INT, IN `nombre` VARCHAR(100), IN `apePat` VARCHAR(50), IN `apeMat` VARCHAR(50), IN `tipopersona` VARCHAR(20), IN `telefo` VARCHAR(9), IN `movil` VARCHAR(9), IN `direc` VARCHAR(300), IN `fecha` DATE, IN `nrodocume` CHAR(8), IN `email` VARCHAR(100))  BEGIN
+UPDATE paciente SET
+pac_nombres = nombre,
+pac_apellidoPate = apePat,
+pac_apellidoMate = apeMat,
+pac_email = email,
+pac_telefono = telefo,
+pac_movil = movil,
+pac_direccion = direc,
+pac_fechaNacimiento = fecha,
+pac_dni = nrodocume,
+pac_tipo=tipopersona
+WHERE paciente_cod = codigo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARENTIDAD` (IN `codigo` INT, IN `entidad` VARCHAR(150), IN `tipo` VARCHAR(50), IN `estado` VARCHAR(20))  BEGIN
+UPDATE entidad SET
+enti_nombre = entidad,
+enti_tipoentidad=tipo,
+enti_estado=estado
+WHERE entidad_cod = codigo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARPERSONAL` (IN `codigo` CHAR(10), IN `nombre` VARCHAR(100), IN `apePat` VARCHAR(50), IN `apeMat` VARCHAR(50), IN `email` VARCHAR(100), IN `telefo` CHAR(13), IN `movil` CHAR(13), IN `direc` VARCHAR(200), IN `fecha` VARCHAR(20), IN `dni` VARCHAR(13))  BEGIN
+UPDATE personal SET
+pers_nombres = nombre,
+pers_apellidoPate = apePat,
+pers_apellidoMate = apeMat,
+pers_email = email,
+pers_telefono = telefo,
+pers_movil = movil,
+pers_direccion = direc,
+pers_fechaNacimiento = fecha,
+pers_dni = dni
+WHERE personal_cod = codigo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARPERSONALTODOS` (IN `codigo` INT, IN `nombre` VARCHAR(100), IN `apePat` VARCHAR(50), IN `apeMat` VARCHAR(50), IN `telefo` VARCHAR(9), IN `movil` VARCHAR(9), IN `direc` VARCHAR(300), IN `fecha` DATE, IN `nrodocume` CHAR(8), IN `email` VARCHAR(100), IN `estado` VARCHAR(20))  BEGIN
+UPDATE personal SET
+pers_nombres = nombre,
+pers_apellidoPate = apePat,
+pers_apellidoMate = apeMat,
+pers_email = email,
+pers_telefono = telefo,
+pers_movil = movil,
+pers_direccion = direc,
+pers_fechaNacimiento = fecha,
+pers_dni = nrodocume,
+pers_estado = estado 
+WHERE personal_cod = codigo;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARTIPODOCUMENTO` (IN `CODIGO` INT, IN `NOMBRE` VARCHAR(250), IN `ESTADO` VARCHAR(20))  BEGIN
+UPDATE tipo_documento 
+SET
+tipodo_descripcion = NOMBRE,
+tipodo_estado = ESTADO
+WHERE tipodocumento_cod = CODIGO;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_EDITARUSUARIO` (IN `usuario` VARCHAR(30), IN `actual` VARCHAR(30), IN `nueva` VARCHAR(30))  BEGIN
+UPDATE usuario u
+SET
+u.usu_clave = nueva
+WHERE u.usu_nombre = usuario AND u.usu_clave = actual;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARAREA` (IN `NOMBRE` VARCHAR(50))  BEGIN
+INSERT INTO area (area_nombre,area_estado) VALUES(NOMBRE,'ACTIVO');
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARPACIENTE` (IN `nombre` VARCHAR(100), IN `apePat` VARCHAR(50), IN `apeMat` VARCHAR(50), IN `tipope` VARCHAR(50), IN `telefo` CHAR(9), IN `movil` CHAR(9), IN `direcc` VARCHAR(250), IN `fecnac` DATE, IN `dni` CHAR(8), IN `email` VARCHAR(30), IN `genero` CHAR(1))  BEGIN
+INSERT INTO paciente(pac_nombres,pac_apellidoPate,pac_apellidoMate,pac_dni,pac_sexo,pac_fechaNacimiento,pac_direccion,pac_telefono,pac_movil,pac_email,pac_estado,pac_tipo) VALUES
+(nombre,apePat,apeMat,dni,genero,fecnac,direcc,telefo,movil,email,'ACTIVO',tipope);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARDOCUMENTO` (IN `iddocumento` CHAR(13), IN `asunto` VARCHAR(150), IN `idtipodocu` INT, IN `idarea` INT, IN `idremitente` INT, IN `idusuario` INT, IN `opcion` VARCHAR(10))  BEGIN
+INSERT INTO documento (documento_cod,doc_asunto,tipoDocumento_cod,area_cod,usu_cod,doc_estado,doc_tipo) VALUES
+(iddocumento,asunto,idtipodocu,idarea,idusuario,'PENDIENTE',opcion);
+IF opcion = 'C' THEN
+INSERT INTO detalle_paciente (paciente_cod,documento_cod) VALUES (idremitente,iddocumento);
+END IF;
+IF opcion = 'I' THEN
+INSERT INTO detalle_entidad(entidad_cod,documento_cod) VALUES (idremitente,iddocumento);
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARDOCUMENTOARCHIVO` (IN `iddocumento` CHAR(13), IN `asunto` VARCHAR(150), IN `idtipodocu` INT, IN `idarea` INT, IN `idremitente` INT, IN `idusuario` INT, IN `opcion` VARCHAR(10), IN `archivo` VARCHAR(350), IN `cont` INT)  BEGIN
+IF cont = 0 THEN
+	INSERT INTO documento (documento_cod,doc_asunto,tipoDocumento_cod,area_cod,usu_cod,doc_estado,doc_tipo) VALUES
+(iddocumento,asunto,idtipodocu,idarea,idusuario,'PENDIENTE',opcion);
+END IF;
+IF cont = 1 THEN
+	INSERT INTO documento (documento_cod,doc_asunto,tipoDocumento_cod,area_cod,usu_cod,doc_estado,doc_tipo,doc_documento) VALUES
+(iddocumento,asunto,idtipodocu,idarea,idusuario,'PENDIENTE',opcion,archivo);
+END IF;
+IF opcion = 'C' THEN
+		INSERT INTO detalle_paciente (paciente_cod,documento_cod) VALUES (idremitente,iddocumento);
+END IF;
+IF opcion = 'I' THEN
+		INSERT INTO detalle_entidad(entidad_cod,documento_cod) VALUES (idremitente,iddocumento);
+END IF;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARENTIDAD` (IN `entidad` VARCHAR(150), IN `tipo` VARCHAR(50))  BEGIN
+INSERT INTO entidad(enti_nombre,enti_tipoentidad,enti_estado) VALUES(entidad,tipo,'ACTIVO');
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARPERSONAL` (IN `nombre` VARCHAR(100), IN `apePat` VARCHAR(50), IN `apeMat` VARCHAR(50), IN `telefo` CHAR(9), IN `movil` CHAR(9), IN `direcc` VARCHAR(250), IN `fecnac` DATE, IN `dni` CHAR(8), IN `email` VARCHAR(30), IN `genero` CHAR(1), IN `usuario` VARCHAR(50), IN `clave` VARCHAR(50), IN `tipousario` INT, IN `puesto` VARCHAR(30))  BEGIN
+INSERT INTO usuario (usu_nombre,usu_clave,usu_estado,cod_tipousuario,usu_foto) VALUES(usuario,clave,'ACTIVO',tipousario,'Fotos/admin.png');
+INSERT INTO personal(pers_nombres,pers_apellidoPate,pers_apellidoMate,pers_dni,pers_sexo,pers_fechaNacimiento,pers_direccion,pers_telefono,pers_movil,pers_email,pers_estado,usuario_cod,pers_puesto) VALUES
+(nombre,apePat,apeMat,dni,genero,fecnac,direcc,telefo,movil,email,'ACTIVO',(SELECT MAX(cod_usuario) from usuario),puesto);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_REGISTRARTIPODOCUMENTO` (IN `NOMBRE` VARCHAR(250))  BEGIN
+INSERT INTO tipo_documento (tipodo_descripcion,tipodo_estado) VALUES (NOMBRE,"ACTIVO");
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_VERIFICARUSUARIO` (IN `_usu` VARCHAR(30), IN `_pass` VARCHAR(30))  SELECT
+usuario.usu_nombre,
+usuario.usu_clave,
+CONCAT_WS(' ',personal.pers_nombres,personal.pers_apellidoPate,personal.pers_apellidoMate),
+tipo_usuario.cod_tipousuario,
+usuario.usu_foto,
+personal.personal_cod,
+tipo_usuario.tipusu_descripcion,
+usuario.cod_usuario
+FROM
+personal
+INNER JOIN usuario ON personal.usuario_cod = usuario.cod_usuario
+INNER JOIN tipo_usuario ON usuario.cod_tipousuario = tipo_usuario.cod_tipousuario
+WHERE usuario.usu_nombre = _usu AND usuario.usu_clave = _pass$$
+
+DELIMITER ;
